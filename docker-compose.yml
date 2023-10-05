@@ -1,31 +1,16 @@
-version: '3.8'                             # Version de la syntaxe Docker Compose
-services:                                  # Définition des services
-  web:                                     # Service pour l'application web
-    build: .                               # Chemin pour construire l'image Docker (utilise le Dockerfile du répertoire actuel)
-    environment:                           # Variables d'environnement
-      MYSQL_DATABASE: php-contact          # Nom de la base de données
-      MYSQL_USER: Christian                # Nom d'utilisateur de MySQL
-      MYSQL_PASSWORD: EqxChris2301         # Mot de passe de l'utilisateur
-    ports:                                 # Mapping des ports
-      - '80:80'                            # Port 80 du conteneur mappé au port 80 de l'hôte
-    volumes:                               # Volumes pour persister les données
-      - ./app/templates:/var/www/html/templates                 # Montage du code source dans le conteneur
-      - ./app/inc:/var/www/html/inc                 # Montage du code source dans le conteneur
-      - ./app/index.php:/var/www/html/index.php                 # Montage du code source dans le conteneur
-      - ./dist:/var/www/html/dist           # Montage du dossier de distribution dans le conteneur
-  mysql:                                   # Service pour la base de données MySQL
-    image: mysql:5.7                        # Utilise l'image MySQL version 5.7
-    container_name: mysql-php-contact       # Nom du conteneur
-    environment:                           # Variables d'environnement
-      MYSQL_ROOT_PASSWORD: EqxChris2301    # Mot de passe root de MySQL
-      MYSQL_DATABASE: php-contact          # Nom de la base de données
-      MYSQL_USER: Christian                # Nom d'utilisateur de MySQL
-      MYSQL_PASSWORD: EqxChris2301         # Mot de passe de l'utilisateur
-    ports:                                 # Mapping des ports
-      - "3307:3306"                        # Port 3306 du conteneur mappé au port 3306 de l'hôte
-    volumes:                               # Volumes pour persister les données
-      - mysql_data:/var/lib/mysql          # Volume pour les données MySQL
-      - ./app/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql  # Script d'initialisation de la base de données
+version: '3'
 
-volumes:                                   # Définition des volumes
-  mysql_data:                              # Volume nommé pour les données MySQL
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./csv:/var/www/html/csv
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword

@@ -1,15 +1,14 @@
-# Utiliser l'image PHP 7.4 avec Apache comme base
-FROM php:7.4-apache
+# Utilise l'image PHP avec Apache
+FROM php:8.0-apache
 
-# Installer l'extension PDO MySQL pour PHP
-RUN docker-php-ext-install pdo pdo_mysql
-
-# Activer le module de réécriture Apache pour prendre en charge la réécriture d'URL
+# Active le module Apache Rewrite
 RUN a2enmod rewrite
 
-# Copier le code source de l'application dans le répertoire /var/www/html du conteneur
-#COPY ./app/ /var/www/html/
-#COPY ./dist/ /var/www/html/dist/
+# Installe des extensions PHP supplémentaires si nécessaire
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Changer la propriété du répertoire pour permettre à Apache d'y écrire
-RUN chown -R www-data:www-data /var/www/html
+# Définit le répertoire de travail
+WORKDIR /var/www/html/csv
+
+# Change le DocumentRoot d'Apache pour pointer vers le bon dossier
+RUN sed -i 's!/var/www/html!/var/www/html/csv/public!g' /etc/apache2/sites-available/000-default.conf
