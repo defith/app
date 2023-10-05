@@ -1,0 +1,82 @@
+{% extends "base.html.twig" %}
+{% block home %}
+	<div class="home-block">
+
+		{% if erreur %}
+			<div class="alert alert-danger" role="alert">
+				{{ erreur }}
+			</div>
+		{% endif %}
+		{% if successmail %}
+			<div class="alert alert-success" role="alert">
+				{{ successmail }}
+			</div>
+		{% endif %}
+		<div class="accordion" id="exempleAccordion">
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="section1">
+					<button id="btn1" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#contenu1" aria-expanded="true">
+						Importer un fichier CSV
+					</button>
+				</h2>
+				<div id="contenu1" class="accordion-collapse collapse show" aria-labelledby="section1" data-bs-parent="#exempleAccordion">
+					<div class="accordion-body">
+						<div id="drop_zone" style="border: 2px dashed #bbb; padding: 20px; text-align: center;">
+							Glisser et déposer votre fichier CSV ici
+						</div>
+						<form id="fileForm" action="loadcsv" method="POST" enctype="multipart/form-data">
+							<input type="file" id="hiddenFileInput" name="csvFile" style="display: none;">
+							<input type="submit" id="submitBtn" style="display: none;">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="section2">
+					<button id="btn2" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contenu2">
+						Filtre pour le fichier CSV importé
+					</button>
+				</h2>
+				<div id="contenu2" class="accordion-collapse collapse" aria-labelledby="section2" data-bs-parent="#exempleAccordion">
+					<div class="accordion-body">
+						{% if csv_content is defined %}
+							{{ include('display.html.twig', { 'csv_content': csv_content|default([]), 'id_prefix': 'first-' }) }}
+							{{ include('filtre.html.twig', { 'csv_content': csv_content|default([]) }) }}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="section3">
+					<button id="btn3" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contenu3">
+						Fichier CSV filtré
+					</button>
+				</h2>
+				<div id="contenu3" class="accordion-collapse collapse" aria-labelledby="section3" data-bs-parent="#exempleAccordion">
+					<div class="accordion-body" style="text-align: center">
+						{% block display %}
+							{% if filtered_csv_content is defined %}
+								{{ include('display.html.twig', { 'csv_content': filtered_csv_content, 'id_prefix': 'second-' }) }}
+								{{ include('export.html.twig') }}
+							{% endif %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="section4">
+					<button id="btn4" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contenu4">
+						Documentation
+					</button>
+				</h2>
+				<div id="contenu4" class="accordion-collapse collapse" aria-labelledby="section4" data-bs-parent="#exempleAccordion">
+					<div class="accordion-body">
+						{% block documentation %}
+							{{ include('explication.html.twig') }}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+<div class="export">
+	<p>Fichier CSV filtré généré :
+		<a href="{{ output_filename }}">Télécharger</a>
+	</p>
+	<form method="POST" action="/sendmail" id="sendMailForm">
+		<input type="email" id="emailInput" name="email" placeholder="Saisir l'email ici" required>
+		<input type="text" id="fileFiltred" name="fileFiltred" value={{ output_filename }} style="display:none;">
+		<input type="submit" id="submitBtn" value="Envoyer par email">
+	</form>
+</div>
+
